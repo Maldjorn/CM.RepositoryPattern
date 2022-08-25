@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CustomerList.aspx.cs" Inherits="CustomerWebForm.CustomerList" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <table class="table table-dark">
+    <table class="table table-bordered">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">ID</th>
@@ -35,6 +35,12 @@
                             </td>
                             <td>
                                 <%=item.totalPurchaseAmount%>
+                            </td>
+                            <td>
+                                <a href="CustomerUpdate.aspx?customer_ID=<%=item.customerID%>" class="btn btn-primary">Edit</a>
+                            </td>
+                            <td>
+                                <asp:Button Text="Delete" CssClass="btn btn-danger" runat="server" />
                             </td>
                         </tr>
                    <% } %>
