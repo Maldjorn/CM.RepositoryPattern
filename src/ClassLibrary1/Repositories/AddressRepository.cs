@@ -226,14 +226,36 @@ namespace CM.Customers.Repositories
             }
         }
 
-        public void GetAll()
-        {
-            throw new NotImplementedException();
-        }
 
-        List<Address> IRepository<Address>.GetAll()
+        public List<Address> GetAll()
         {
-            throw new NotImplementedException();
+            List<Address> addresses = new List<Address>();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                var command = new SqlCommand(
+                    "SELECT * FROM dbo.[Addresses]", connection);
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        addresses.Add(new Address()
+                        {
+                            AddressID = Convert.ToInt32(reader["address_ID"]),
+                            CustomerID = Convert.ToInt32(reader["customer_ID"]),
+                            AddressLine = reader["address_Line"].ToString(),
+                            AddressLine2 = reader["address_Line_2"].ToString(),
+                            AddressType = Convert.ToInt32(reader["address_type"]),
+                            City = reader["city"].ToString(),
+                            State = reader["state"].ToString(),
+                            Country = reader["country"].ToString(),
+                            PostalCode = reader["postal_code"].ToString()
+                        }); 
+                    }
+                }
+            }
+            return addresses;
         }
     }
+
 }

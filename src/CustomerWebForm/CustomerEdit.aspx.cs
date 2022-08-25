@@ -11,7 +11,6 @@ namespace CustomerWebForm
 {
     public partial class CustomerEdit : System.Web.UI.Page
     {
-        public List<Customer> customers { get; set; } = new List<Customer>();
         public IRepository<Customer> _repository;
         public CustomerEdit()
         {
