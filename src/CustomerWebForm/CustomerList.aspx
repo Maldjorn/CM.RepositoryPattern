@@ -40,7 +40,7 @@
                                 <a href="CustomerUpdate.aspx?customer_ID=<%=item.customerID%>" class="btn btn-primary">Edit</a>
                             </td>
                             <td>
-                                <asp:Button Text="Delete" CssClass="btn btn-danger" runat="server" />
+                                <a href="CustomerDelete.aspx?customer_ID=<%=item.customerID%>" class="btn btn-danger">Delete</a>
                             </td>
                         </tr>
                    <% } %>
