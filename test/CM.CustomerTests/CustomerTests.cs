@@ -1,19 +1,14 @@
-using System;
-using Xunit;
-using CM.Customers.Repositories;
 using CM.Customers;
+using CM.Customers.Repositories;
+using System.Collections.Generic;
+using Xunit;
 
 namespace CM.CustomerTests
 {
     public class CustomerTests
     {
         CustomerRepositoryFixture Fixture = new CustomerRepositoryFixture();
-        [Fact]
-        public void ShouldBeAbleToCreateRepository()
-        {
-            var repository = new CustomerRepository();
-            Assert.NotNull(repository);
-        }
+
         [Fact]
         public void ShouldBeAbleToCreateCustomer()
         {
@@ -35,7 +30,7 @@ namespace CM.CustomerTests
         public void ShouldBeAbleToDelete()
         {
             var repository = new CustomerRepository();
-           repository.Delete(1);
+            repository.Delete(1);
         }
         [Fact]
         public void ShouldBeAbleToRead()
@@ -57,7 +52,7 @@ namespace CM.CustomerTests
                 phoneNumber = "165204892561322",
                 totalPurchaseAmount = 123,
                 customerID = 2
-                
+
             };
             repository.Update(customer);
         }
@@ -65,7 +60,7 @@ namespace CM.CustomerTests
         [Fact]
         public void ShouldBeAbleGetID()
         {
-            
+
         }
 
     }

@@ -1,10 +1,13 @@
-﻿namespace CM.Customers
+﻿using System.Collections.Generic;
+
+namespace CM.Customers
 {
-    interface IRepository<TEntity>
+    public interface IRepository<TEntity>
     {
         void Create(TEntity entity);
         TEntity Read(int entityCode);
         void Update(TEntity entity);
         void Delete(int entityCode);
+        List<TEntity> GetAll();
     }
 }
