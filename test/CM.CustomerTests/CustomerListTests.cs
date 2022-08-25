@@ -15,15 +15,16 @@ namespace CM.CustomerTests
         [Fact]
         public void ShouldBeAbleToCreateRepository()
         {
-            var repository = new Mock<IRepository<Country>>();
-            repository.Setup(x => x.GetAll()).Returns(() => new List<Country>()
+            var repository = new Mock<IRepository<Customer>>();
+            repository.Setup(x => x.GetAll()).Returns( () => new List<Customer>()
             {
-                new Country(),
-                new Country()
+                new Customer(),
+                new Customer()
             });
-            var cutomerList = new CustomerList
-            customers = repository.GetAll();
-            Assert.Equal(8, customers.Count);
+            var customerList = new CustomerList(repository.Object);
+
+            customerList.LoadCustomerFromDatabase();
+            Assert.Equal(2, customerList.customers.Count);
             Assert.NotNull(repository);
         }
     }

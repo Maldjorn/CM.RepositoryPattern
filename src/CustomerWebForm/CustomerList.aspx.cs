@@ -12,11 +12,7 @@ namespace CustomerWebForm
     public partial class CustomerList : System.Web.UI.Page
     {
         public List<Customer> customers { get; set; } = new List<Customer>();
-        IRepository<Customer> _repository;
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            LoadCustomerFromDatabase();
-        }
+        public IRepository<Customer> _repository;
         public CustomerList()
         {
             _repository = new CustomerRepository();
@@ -25,6 +21,12 @@ namespace CustomerWebForm
         {
             _repository = customer;
         }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            LoadCustomerFromDatabase();
+        }
+        
         public void LoadCustomerFromDatabase()
         {
             customers = _repository.GetAll();
