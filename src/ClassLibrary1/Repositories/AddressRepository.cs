@@ -8,7 +8,15 @@ namespace CM.Customers.Repositories
 {
     public class AddressRepository : IRepository<Address>
     {
-        readonly string connectionString = @"Data Source=DESKTOP-JDONGM6\SQLEXPRESS;Database=CustomerLib_Timoschenko;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private string connectionString;
+        public AddressRepository()
+        {
+            connectionString = @"Data Source=DESKTOP-JDONGM6\SQLEXPRESS;Database=CustomerLib_Timoschenko;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        }
+        public AddressRepository(string ConnectionString)
+        {
+            connectionString = ConnectionString;
+        }
         public void Create(Address entity)
         {
             using (var connection = new SqlConnection(connectionString))
@@ -255,6 +263,25 @@ namespace CM.Customers.Repositories
                 }
             }
             return addresses;
+        }
+
+        public List<int> GetAllId()
+        {
+            var allId = new List<int>(); 
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                var command = new SqlCommand(
+                    "SELECT DISTINCT address_ID FROM dbo.[Addresses]", connection);
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        allId.Add(Convert.ToInt32(reader["address_ID"]));
+                    }
+                }
+            }
+            return allId;
         }
     }
 

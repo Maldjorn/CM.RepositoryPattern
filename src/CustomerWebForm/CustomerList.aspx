@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CustomerList.aspx.cs" Inherits="CustomerWebForm.CustomerList" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <a href="CustomerEdit.aspx" style="margin-top: 10px; margin-bottom: 10px;" class="btn btn-success">Add</a>
     <table class="table table-bordered">
             <thead class="thead-dark">
                 <tr>

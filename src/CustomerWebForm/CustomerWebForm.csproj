@@ -106,8 +106,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="AddressDelete.aspx" />
+    <Content Include="AddressEdit.aspx" />
     <Content Include="AddressesList.aspx" />
-    <Content Include="AddresssEdit.aspx" />
+    <Content Include="AddressUpdate.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -166,6 +168,20 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddressDelete.aspx.cs">
+      <DependentUpon>AddressDelete.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddressDelete.aspx.designer.cs">
+      <DependentUpon>AddressDelete.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddressEdit.aspx.cs">
+      <DependentUpon>AddressEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddressEdit.aspx.designer.cs">
+      <DependentUpon>AddressEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AddressesList.aspx.cs">
       <DependentUpon>AddressesList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -173,12 +189,12 @@
     <Compile Include="AddressesList.aspx.designer.cs">
       <DependentUpon>AddressesList.aspx</DependentUpon>
     </Compile>
-    <Compile Include="AddresssEdit.aspx.cs">
-      <DependentUpon>AddresssEdit.aspx</DependentUpon>
+    <Compile Include="AddressUpdate.aspx.cs">
+      <DependentUpon>AddressUpdate.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="AddresssEdit.aspx.designer.cs">
-      <DependentUpon>AddresssEdit.aspx</DependentUpon>
+    <Compile Include="AddressUpdate.aspx.designer.cs">
+      <DependentUpon>AddressUpdate.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="About.aspx.cs">

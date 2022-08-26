@@ -9,5 +9,6 @@ namespace CM.Customers
         void Update(TEntity entity);
         void Delete(int entityCode);
         List<TEntity> GetAll();
+        List<int> GetAllId();
     }
 }

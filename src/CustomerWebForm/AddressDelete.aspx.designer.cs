@@ -10,7 +10,7 @@
 
 namespace CustomerWebForm
 {
-    public partial class AddresssEdit
+    public partial class AddressDelete
     {
     }
 }

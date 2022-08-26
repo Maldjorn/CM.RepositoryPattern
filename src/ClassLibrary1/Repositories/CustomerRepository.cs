@@ -7,7 +7,15 @@ namespace CM.Customers.Repositories
 {
     public class CustomerRepository : IRepository<Customer>
     {
-        readonly string connectionString = @"Data Source=DESKTOP-JDONGM6\SQLEXPRESS;Database=CustomerLib_Timoschenko;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        readonly string connectionString;
+        public CustomerRepository()
+        {
+            connectionString = @"Data Source=DESKTOP-JDONGM6\SQLEXPRESS;Database=CustomerLib_Timoschenko;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        }
+        public CustomerRepository(string ConnectionString)
+        {
+            connectionString = ConnectionString;
+        }
         public void Create(Customer entity)
         {
             using (var connection = new SqlConnection(connectionString))
@@ -200,6 +208,24 @@ namespace CM.Customers.Repositories
                 else
                     return 0;
             }
+        }
+        public List<int> GetAllId()
+        {
+            var allId = new List<int>();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                var command = new SqlCommand(
+                    "SELECT DISTINCT customer_ID FROM dbo.[Customers]", connection);
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        allId.Add(Convert.ToInt32(reader["customer_ID"]));
+                    }
+                }
+            }
+            return allId;
         }
     }
 }

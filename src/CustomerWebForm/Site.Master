@@ -47,10 +47,10 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" runat="server" href="~/CustomerList">Customer List</a>
+                    <a class="navbar-brand" runat="server" href="~/AddressesList">Addresses List</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a runat="server" href="~/CustomerEdit">Add</a></li>
                     </ul>
                 </div>
             </div>

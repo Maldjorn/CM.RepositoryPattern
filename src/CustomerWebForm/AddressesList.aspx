@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="AddressesList.aspx.cs" Inherits="CustomerWebForm.AddressesList" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <a href="AddressEdit.aspx" style="margin-top: 10px; margin-bottom: 10px;" class="btn btn-success">Add</a>
     <table class="table table-bordered">
             <thead class="thead-dark">
                 <tr>
@@ -45,10 +46,10 @@
                                 <%=item.PostalCode%>
                             </td>
                             <td>
-                                <a href="CustomerUpdate.aspx?customer_ID=<%=item.AddressID%>" class="btn btn-primary">Edit</a>
+                                <a href="AddressUpdate.aspx?address_ID=<%=item.AddressID%>" class="btn btn-primary">Edit</a>
                             </td>
                             <td>
-                                <a href="CustomerDelete.aspx?customer_ID=<%=item.AddressID%>" class="btn btn-danger">Delete</a>
+                                <a href="AddressDelete.aspx?address_ID=<%=item.AddressID%>" class="btn btn-danger">Delete</a>
                             </td>
                         </tr>
                    <% } %>

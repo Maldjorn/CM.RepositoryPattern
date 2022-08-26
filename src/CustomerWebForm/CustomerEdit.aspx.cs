@@ -11,10 +11,12 @@ namespace CustomerWebForm
 {
     public partial class CustomerEdit : System.Web.UI.Page
     {
+        readonly string connectionString = @"Data Source=DESKTOP-JDONGM6\SQLEXPRESS;Database=CustomerLib_Timoschenko_Web;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+
         public IRepository<Customer> _repository;
         public CustomerEdit()
         {
-            _repository = new CustomerRepository();
+            _repository = new CustomerRepository(connectionString);
         }
         public CustomerEdit(IRepository<Customer> customer)
         {
