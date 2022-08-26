@@ -272,12 +272,12 @@ namespace CM.Customers.Repositories
             {
                 connection.Open();
                 var command = new SqlCommand(
-                    "SELECT DISTINCT address_ID FROM dbo.[Addresses]", connection);
+                    "SELECT DISTINCT customer_ID FROM dbo.[Customers]", connection);
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        allId.Add(Convert.ToInt32(reader["address_ID"]));
+                        allId.Add(Convert.ToInt32(reader["customer_ID"]));
                     }
                 }
             }

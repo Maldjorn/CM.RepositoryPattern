@@ -10,15 +10,13 @@ namespace CustomerWebForm
         readonly string connectionString = @"Data Source=DESKTOP-JDONGM6\SQLEXPRESS;Database=CustomerLib_Timoschenko_Web;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
         public IRepository<Address> _addressRepository;
-        public IRepository<Customer> _customerRepository;
         public AddressEdit()
         {
             _addressRepository = new AddressRepository(connectionString);
-            _customerRepository = new CustomerRepository(connectionString);
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            var addresses_ID = _customerRepository.GetAllId();
+            var addresses_ID = _addressRepository.GetAllId();
             foreach (var item in addresses_ID)
             {
                 drpDwnList.Items.Add(item.ToString());
