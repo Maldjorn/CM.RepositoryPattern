@@ -12,8 +12,6 @@ namespace CustomerWebForm
     public partial class CustomerUpdate : System.Web.UI.Page
     {
         readonly string connectionString = @"Data Source=DESKTOP-JDONGM6\SQLEXPRESS;Database=CustomerLib_Timoschenko_Web;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-
-        public List<Customer> customers { get; set; } = new List<Customer>();
         public IRepository<Customer> _repository;
         public CustomerUpdate()
         {

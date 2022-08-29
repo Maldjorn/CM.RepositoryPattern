@@ -39,7 +39,7 @@ namespace CustomerWebForm
                     cityTextBox.Text = addresses.City;
                     postalCodeTextBox.Text = addresses.PostalCode;
                     stateTextBox.Text = addresses.State;
-                    countryTextBox.Text = addresses.Country;
+                    countyDrpDwn.SelectedValue = addresses.Country;
                 }
             }
         }
@@ -56,7 +56,7 @@ namespace CustomerWebForm
                 City = cityTextBox.Text,
                 PostalCode = postalCodeTextBox.Text,
                 State = stateTextBox.Text,
-                Country = countryTextBox.Text
+                Country = countyDrpDwn.SelectedValue
             };
             _addressRepository.Update(address);
             Response.Redirect("AddressesList.aspx");

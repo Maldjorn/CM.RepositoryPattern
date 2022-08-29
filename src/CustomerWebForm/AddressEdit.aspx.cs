@@ -34,7 +34,7 @@ namespace CustomerWebForm
                 City = cityTextBox.Text,
                 PostalCode = postalCodeTextBox.Text,
                 State = stateTextBox.Text,
-                Country = countryTextBox.Text
+                Country = countyDrpDwn.SelectedValue,
             };
             _addressRepository.Create(address);
             Response.Redirect("AddressesList.aspx");
