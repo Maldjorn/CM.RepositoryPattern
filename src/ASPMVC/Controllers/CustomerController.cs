@@ -20,10 +20,41 @@ namespace ASPMVC.Controllers
         }
 
         public ActionResult Create()
+        {            
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Customer customer)
+        {
+            try
+            {
+                repository = new CustomerRepository();
+                repository.Create(customer);
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                ModelState.AddModelError("","Unable to add customer");
+            }
+            return View(customer);
+        }
+
+        [HttpGet]
+        public ActionResult Details(int? customerId)
         {
             repository = new CustomerRepository();
-            
-            return View();
+            if (customerId == null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            var customer = repository.Read(customerId.Value);
+            if (customer == null)
+            {
+                return HttpNotFound();
+            }
+            return View(customer);
         }
     }
 }

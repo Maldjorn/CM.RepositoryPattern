@@ -53,9 +53,9 @@
             @Html.DisplayFor(modelItem => item.totalPurchaseAmount)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.customerID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.customerID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.customerID })
+            @Html.ActionLink("Edit", "Edit", new { customerId=item.customerID }) |
+            @Html.ActionLink("Details", "Details", new { customerId = item.customerID }) |
+            @Html.ActionLink("Delete", "Delete", new { customerId = item.customerID })
         </td>
     </tr>
 }
