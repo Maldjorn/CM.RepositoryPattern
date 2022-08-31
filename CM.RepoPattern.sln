@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CM.CustomerTests", "test\CM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerWebForm", "src\CustomerWebForm\CustomerWebForm.csproj", "{68EF080B-F5D4-4DCD-8E40-F94FBBDA823F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CM.WebFormsTests", "test\CM.WebFormsTests\CM.WebFormsTests.csproj", "{EAE5F91F-7F8D-4C2A-9B5B-16B0DC9A0F04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CM.WebFormsTests", "test\CM.WebFormsTests\CM.WebFormsTests.csproj", "{EAE5F91F-7F8D-4C2A-9B5B-16B0DC9A0F04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASPMVC", "src\ASPMVC\ASPMVC.csproj", "{600DF4CA-960D-4C01-8807-C668539BD0BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{EAE5F91F-7F8D-4C2A-9B5B-16B0DC9A0F04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EAE5F91F-7F8D-4C2A-9B5B-16B0DC9A0F04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EAE5F91F-7F8D-4C2A-9B5B-16B0DC9A0F04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{600DF4CA-960D-4C01-8807-C668539BD0BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{600DF4CA-960D-4C01-8807-C668539BD0BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{600DF4CA-960D-4C01-8807-C668539BD0BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{600DF4CA-960D-4C01-8807-C668539BD0BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
