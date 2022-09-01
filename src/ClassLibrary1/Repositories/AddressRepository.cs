@@ -92,7 +92,7 @@ namespace CM.Customers.Repositories
             }
         }
 
-        public Address Read(int entityCode)
+        public Address Read(int? entityCode)
         {
             using (var connection = new SqlConnection(connectionString))
             {

@@ -74,7 +74,7 @@ namespace CM.Customers.Repositories
             }
         }
 
-        public Customer Read(int entityCode)
+        public Customer Read(int? entityCode)
         {
             using (var connection = new SqlConnection(connectionString))
             {
@@ -92,6 +92,7 @@ namespace CM.Customers.Repositories
                     {
                         return new Customer
                         {
+                            customerID = Convert.ToInt32(reader["customer_ID"]),
                             firstName = reader["first_name"].ToString(),
                             lastName = reader["last_name"].ToString(),
                             email = reader["email"].ToString(),

@@ -1,4 +1,8 @@
-﻿@model IEnumerable<CM.Customers.Customer>
+﻿@using CM.Customers;
+@using PagedList;
+@using PagedList.Mvc;
+
+@model PagedList.PagedList<Customer>
 
 @{
     ViewBag.Title = "Index";
@@ -12,52 +16,58 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.firstName)
+            First Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.lastName)
+            Last Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.phoneNumber)
+            Phone Number
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.email)
+            Email
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.notes)
+            Notes
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.totalPurchaseAmount)
+            Total Purchases Amount
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.firstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.lastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.phoneNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.notes)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.totalPurchaseAmount)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { customerId=item.customerID }) |
-            @Html.ActionLink("Details", "Details", new { customerId = item.customerID }) |
-            @Html.ActionLink("Delete", "Delete", new { customerId = item.customerID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.firstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.lastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.phoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.notes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.totalPurchaseAmount)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { customerId = item.customerID }) |
+                @Html.ActionLink("Details", "Details", new { customerId = item.customerID }) |
+                @Html.ActionLink("Delete", "Delete", new { customerId = item.customerID })
+            </td>
+        </tr>
+    }
 
 </table>
+<br />
+@*Page @(Model.PageCount < Model.PageNumber ? 1 : Model.PageNumber)/@(Model.PageCount)*@
+<div>
+    @Html.PagedListPager(Model, Page => Url.Action("Index", new { page = Page }))
+</div>

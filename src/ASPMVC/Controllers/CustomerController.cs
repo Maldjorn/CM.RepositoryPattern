@@ -1,9 +1,7 @@
 ﻿using CM.Customers;
 using CM.Customers.Repositories;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using PagedList;
 using System.Web.Mvc;
 
 namespace ASPMVC.Controllers
@@ -11,16 +9,26 @@ namespace ASPMVC.Controllers
     public class CustomerController : Controller
     {
         List<Customer> customers = new List<Customer>();
-        IRepository<Customer> repository;
-        public ActionResult Index()
+        IRepository<Customer> customerRepository;
+        public CustomerController()
         {
-            repository = new CustomerRepository();
-            customers = repository.GetAll();
-            return View(customers);
+            customerRepository = new CustomerRepository();
+        }
+
+        public CustomerController(IRepository<Customer> repository)
+        {
+            customerRepository = repository;
+        }
+        public ActionResult Index(int? page)
+        {
+            int pageNumber = page ?? 1;
+            int pageSize = 5;
+            customers = customerRepository.GetAll();
+            return View(customers.ToPagedList(pageNumber,pageSize));
         }
 
         public ActionResult Create()
-        {            
+        {
             return View();
         }
 
@@ -30,31 +38,81 @@ namespace ASPMVC.Controllers
         {
             try
             {
-                repository = new CustomerRepository();
-                repository.Create(customer);
+                customerRepository.Create(customer);
                 return RedirectToAction("Index");
             }
             catch
             {
-                ModelState.AddModelError("","Unable to add customer");
+                ModelState.AddModelError("", "Unable to add customer");
             }
             return View(customer);
         }
 
-        [HttpGet]
         public ActionResult Details(int? customerId)
         {
-            repository = new CustomerRepository();
             if (customerId == null)
             {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
-            var customer = repository.Read(customerId.Value);
+            var customer = customerRepository.Read(customerId);
             if (customer == null)
             {
                 return HttpNotFound();
             }
             return View(customer);
+        }
+
+        public ActionResult Delete(int? customerId)
+        {
+            if (customerId == null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            var customer = customerRepository.Read(customerId);
+            if (customer == null)
+            {
+                return HttpNotFound();
+            }
+            return View(customer);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int customerId)
+        {
+            try
+            {
+                customerRepository.Delete(customerId);
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Unable to add customer");
+            }
+            return View();
+        }
+
+        public ActionResult Edit(int? customerId)
+        {
+            if (customerId == null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            var customer = customerRepository.Read(customerId);
+            if (customer == null)
+            {
+                return HttpNotFound();
+            }
+            return View(customer);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Customer customer)
+        {
+            customerRepository.Update(customer);
+            return RedirectToAction("index");
         }
     }
 }
