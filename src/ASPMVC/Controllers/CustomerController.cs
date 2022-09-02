@@ -1,30 +1,42 @@
 ﻿using CM.Customers;
+using CM.Customers.Entities;
 using CM.Customers.Repositories;
-using System.Collections.Generic;
 using PagedList;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace ASPMVC.Controllers
 {
     public class CustomerController : Controller
     {
+        #region Fields
         List<Customer> customers = new List<Customer>();
-        IRepository<Customer> customerRepository;
+        readonly IRepository<Customer> _customerRepository;
+        readonly IRepository<Address> _addressRepository;
+        readonly string connectionString = @"Data Source=DESKTOP-JDONGM6\SQLEXPRESS;Database=CustomerLib_Timoschenko_Web;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        #endregion
+
+        #region Constructors
         public CustomerController()
         {
-            customerRepository = new CustomerRepository();
+            _customerRepository = new CustomerRepository(connectionString);
+            _addressRepository = new AddressRepository(connectionString);
         }
 
         public CustomerController(IRepository<Customer> repository)
         {
-            customerRepository = repository;
+            _customerRepository = repository;
         }
+        #endregion
+
+        #region Methods
+
         public ActionResult Index(int? page)
         {
             int pageNumber = page ?? 1;
             int pageSize = 5;
-            customers = customerRepository.GetAll();
-            return View(customers.ToPagedList(pageNumber,pageSize));
+            customers = _customerRepository.GetAll();
+            return View(customers.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult Create()
@@ -36,16 +48,8 @@ namespace ASPMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Customer customer)
         {
-            try
-            {
-                customerRepository.Create(customer);
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                ModelState.AddModelError("", "Unable to add customer");
-            }
-            return View(customer);
+            _customerRepository.Create(customer);
+            return RedirectToAction("Index");
         }
 
         public ActionResult Details(int? customerId)
@@ -54,11 +58,16 @@ namespace ASPMVC.Controllers
             {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
-            var customer = customerRepository.Read(customerId);
+            var customer = _customerRepository.Read(customerId);
+
             if (customer == null)
             {
                 return HttpNotFound();
             }
+
+            var addresses = _addressRepository.GetAll(customerId);
+            ViewBag.CustomerAddresses = addresses;
+
             return View(customer);
         }
 
@@ -68,7 +77,7 @@ namespace ASPMVC.Controllers
             {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
-            var customer = customerRepository.Read(customerId);
+            var customer = _customerRepository.Read(customerId);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -80,16 +89,10 @@ namespace ASPMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int customerId)
         {
-            try
-            {
-                customerRepository.Delete(customerId);
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                ModelState.AddModelError("", "Unable to add customer");
-            }
-            return View();
+
+            _customerRepository.Delete(customerId);
+            return RedirectToAction("Index");
+
         }
 
         public ActionResult Edit(int? customerId)
@@ -98,7 +101,7 @@ namespace ASPMVC.Controllers
             {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
-            var customer = customerRepository.Read(customerId);
+            var customer = _customerRepository.Read(customerId);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -111,8 +114,9 @@ namespace ASPMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Customer customer)
         {
-            customerRepository.Update(customer);
+            _customerRepository.Update(customer);
             return RedirectToAction("index");
         }
+        #endregion
     }
 }

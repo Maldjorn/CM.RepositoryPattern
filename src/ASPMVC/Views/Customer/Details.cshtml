@@ -68,6 +68,57 @@
 
     </dl>
 </div>
+<div>
+    @Html.ActionLink("Create New", "Create", "Address")
+</div>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th class="text-center" scope="col">Address Line</th>
+            <th class="text-center" scope="col">Address Line 2</th>
+            <th class="text-center" scope="col">Address Type</th>
+            <th class="text-center" scope="col">City</th>
+            <th class="text-center" scope="col">State</th>
+            <th class="text-center" scope="col">Country</th>
+            <th class="text-center" scope="col">Postal Code</th>
+            <th class="text-center" scope="col"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i></th>
+            <th class="text-center" scope="col"><i class="glyphicon glyphicon-minus" aria-hidden="true"></i></th>
+        </tr>
+    </thead>
+    @foreach (var item in ViewBag.CustomerAddresses)
+    {
+        <tr class="text-center">
+            <td>
+                @item.AddressLine
+            </td>
+
+            <td>
+                @item.AddressLine2
+            </td>
+
+            <td>
+                @item.AddressType
+            </td>
+
+            <td>
+                @item.City
+            </td>
+            <td>
+                @item.PostalCode
+            </td>
+            <td>
+                @item.State
+            </td>
+            <td>
+                @item.Country
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "Address", new { addressId = item.AddressID }, null) |
+                @Html.ActionLink("Details", "Details", "Address", new { addressId = item.AddressID }, null)
+            </td>
+        </tr>
+    }
+</table>
 <p>
     @Html.ActionLink("Edit", "Edit", new { customerId = Model.customerID })
     @Html.ActionLink("Back to List", "Index")

@@ -101,7 +101,7 @@ namespace CM.Customers.Repositories
                             totalPurchaseAmount = Convert.ToDecimal(reader["total_purchases_amount"])
                         };
                     }
-                    return new Customer();
+                    return null;
                 }
             }
         }
@@ -225,6 +225,11 @@ namespace CM.Customers.Repositories
                 }
             }
             return allId;
+        }
+
+        public List<Customer> GetAll(int? entityCode)
+        {
+            throw new NotImplementedException();
         }
     }
 }

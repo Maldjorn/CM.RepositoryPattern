@@ -8,7 +8,7 @@ namespace CM.Customers.Repositories
 {
     public class AddressRepository : IRepository<Address>
     {
-        private string connectionString;
+        private readonly string connectionString;
         public AddressRepository()
         {
             connectionString = @"Data Source=DESKTOP-JDONGM6\SQLEXPRESS;Database=CustomerLib_Timoschenko;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
@@ -282,6 +282,41 @@ namespace CM.Customers.Repositories
                 }
             }
             return allId;
+        }
+
+        public List<Address> GetAll(int? entityCode)
+        {
+            List<Address> addresses = new List<Address>();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                var command = new SqlCommand(
+                    "SELECT * FROM dbo.[Addresses] WHERE customer_ID = @customerId", connection);
+                var addressIDParam = new SqlParameter("@customerId", SqlDbType.Int)
+                {
+                    Value = entityCode
+                };
+                command.Parameters.Add(addressIDParam);
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        addresses.Add(new Address()
+                        {
+                            AddressID = Convert.ToInt32(reader["address_ID"]),
+                            CustomerID = Convert.ToInt32(reader["customer_ID"]),
+                            AddressLine = reader["address_Line"].ToString(),
+                            AddressLine2 = reader["address_Line_2"].ToString(),
+                            AddressType = Convert.ToInt32(reader["address_type"]),
+                            City = reader["city"].ToString(),
+                            State = reader["state"].ToString(),
+                            Country = reader["country"].ToString(),
+                            PostalCode = reader["postal_code"].ToString()
+                        });
+                    }
+                }
+            }
+            return addresses;
         }
     }
 
