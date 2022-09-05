@@ -1,10 +1,6 @@
 ﻿using CM.Customers;
 using CM.Customers.Entities;
 using CM.Customers.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace ASPMVC.Controllers
@@ -46,6 +42,10 @@ namespace ASPMVC.Controllers
             {
                 CustomerID = customerId.Value
             };
+            if (address.CustomerID == 0)
+            {
+                return HttpNotFound();
+            }
             return View(address);
         }
 
@@ -96,25 +96,21 @@ namespace ASPMVC.Controllers
             {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
-            var customer = _addressRepository.Read(addressId);
-            if (customer == null)
-            {
-                return HttpNotFound();
-            }
-            return View(customer);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int addressId)
-        {
             var address = _addressRepository.Read(addressId);
             if (address == null)
             {
                 return HttpNotFound();
             }
-            _addressRepository.Delete(addressId);
-            return RedirectToAction("Details", "Customer", new { customerId = address.CustomerID });
+            return View(address);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(Address address)
+        {
+            var addressObject = _addressRepository.Read(address.AddressID);
+            _addressRepository.Delete(address.AddressID);
+            return RedirectToAction("Details", "Customer", new { customerId = addressObject.CustomerID });
 
         }
     }

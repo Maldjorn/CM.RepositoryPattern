@@ -2,6 +2,7 @@
 using CM.Customers;
 using CM.Customers.Entities;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Xunit;
@@ -22,7 +23,6 @@ namespace CM.MVCTests
         {
             var addressRepositoryMock = new Mock<IRepository<Address>>();
             var addressController = new AddressController(addressRepositoryMock.Object);
-            addressController.Create();
             var address = new Address()
             {
                 CustomerID = 1,
@@ -37,6 +37,33 @@ namespace CM.MVCTests
 
             var result = addressController.Create(address);
             addressRepositoryMock.Verify(x => x.Create(address));
+        }
+        [Fact]
+        public void ShouldDoCreateAddressWithArgs()
+        {
+            var addressRepositoryMock = new Mock<IRepository<Address>>();
+            var addressController = new AddressController(addressRepositoryMock.Object);
+            var result = addressController.Create(1);
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void ShouldDoCreateBadRequest()
+        {
+            var addressRepositoryMock = new Mock<IRepository<Address>>();
+            var addressController = new AddressController(addressRepositoryMock.Object);
+            int? nullInt = null;
+            var result = addressController.Create(nullInt) as HttpStatusCodeResult;
+            Assert.Equal(new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest).StatusCode, result.StatusCode);
+        }
+        [Fact]
+        public void ShouldDoCreateHttpNotFoundById()
+        {
+            var addressRepositoryMock = new Mock<IRepository<Address>>();
+            var addressController = new AddressController(addressRepositoryMock.Object);
+            int? nullInt = null;
+            var result = addressController.Create(0) as HttpNotFoundResult;
+            Assert.Equal(new HttpNotFoundResult().StatusCode, result.StatusCode);
         }
         [Fact]
         public void ShouldDoEditBadrequest()
@@ -100,6 +127,24 @@ namespace CM.MVCTests
             var result = (addressController.Details(100) as HttpNotFoundResult);
             var expectedResult = new HttpNotFoundResult().StatusCode;
             Assert.Equal(expectedResult,result.StatusCode);
+        }
+
+        [Fact]
+        public void ShouldDoDeleteHttpStatusCodeError()
+        {
+            var addressRepositoryMock = new Mock<IRepository<Address>>();
+            var addressController = new AddressController(addressRepositoryMock.Object);
+            int? nullInt = null;
+            var result = addressController.Delete(nullInt)as HttpStatusCodeResult;
+            Assert.NotNull(result);
+        }
+        [Fact]
+        public void ShouldDoDeleteHttpNotFound()
+        {
+            var addressRepositoryMock = new Mock<IRepository<Address>>();
+            var addressController = new AddressController(addressRepositoryMock.Object);
+            var result = addressController.Delete(1) as HttpNotFoundResult;
+            Assert.NotNull(result);
         }
 
     }

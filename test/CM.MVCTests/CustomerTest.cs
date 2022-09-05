@@ -76,7 +76,7 @@ namespace CM.MVCTests
             var customerRepositoryMock = new Mock<IRepository<Customer>>();
             var controller = new CustomerController(customerRepositoryMock.Object);
             var customers = controller.Delete(2) as RedirectToRouteResult;
-            customerRepositoryMock.Verify(x => x.Delete(It.IsAny<int>()));
+            customerRepositoryMock.Verify(x => x.Delete(2));
             Assert.NotNull(customers);
         }
         [Fact]
@@ -89,7 +89,7 @@ namespace CM.MVCTests
         }
 
         [Fact]
-        public void ShouldDoDetailsDetails()
+        public void ShouldDoDetailsHttpStatusCodeResult()
         {
             var controller = new CustomerController();
             var result = controller.Details(null) as HttpStatusCodeResult;
