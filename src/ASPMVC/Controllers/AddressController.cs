@@ -36,9 +36,29 @@ namespace ASPMVC.Controllers
             return View(addresses);
         }
 
-        public ActionResult Create()
+        public ActionResult Create(int? customerId)
         {
-            return View();
+            if (customerId == null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            var address = new Address()
+            {
+                CustomerID = customerId.Value
+            };
+            return View(address);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Address address)
+        {
+            if (address == null)
+            {
+                return HttpNotFound();
+            }
+            _addressRepository.Create(address);
+            return RedirectToAction("Details", "Customer", new { customerId = address.CustomerID });
         }
 
         public ActionResult Edit(int? addressId)
@@ -54,19 +74,6 @@ namespace ASPMVC.Controllers
             }
             return View(address);
         }
-        
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Address address)
-        {
-            if (address == null)
-            {
-                return HttpNotFound();
-            }
-            _addressRepository.Create(address);
-            return RedirectToAction("Index");
-        }
-        #endregion
 
         public ActionResult Details(int? addressId)
         {
@@ -80,6 +87,35 @@ namespace ASPMVC.Controllers
                 return HttpNotFound();
             }
             return View(address);
+        }
+        #endregion
+
+        public ActionResult Delete(int? addressId)
+        {
+            if (addressId == null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            var customer = _addressRepository.Read(addressId);
+            if (customer == null)
+            {
+                return HttpNotFound();
+            }
+            return View(customer);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int addressId)
+        {
+            var address = _addressRepository.Read(addressId);
+            if (address == null)
+            {
+                return HttpNotFound();
+            }
+            _addressRepository.Delete(addressId);
+            return RedirectToAction("Details", "Customer", new { customerId = address.CustomerID });
+
         }
     }
 }

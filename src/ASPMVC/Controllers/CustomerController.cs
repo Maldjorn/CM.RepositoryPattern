@@ -89,7 +89,6 @@ namespace ASPMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int customerId)
         {
-
             _customerRepository.Delete(customerId);
             return RedirectToAction("Index");
 

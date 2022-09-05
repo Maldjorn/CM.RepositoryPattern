@@ -69,7 +69,7 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Create New", "Create", "Address")
+    @Html.ActionLink("Create New", "Create", "Address", new { customerId = Model.customerID },null)
 </div>
 <table class="table">
     <thead class="thead-dark">
@@ -114,7 +114,8 @@
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", "Address", new { addressId = item.AddressID }, null) |
-                @Html.ActionLink("Details", "Details", "Address", new { addressId = item.AddressID }, null)
+                @Html.ActionLink("Details", "Details", "Address", new { addressId = item.AddressID }, null) |
+                @Html.ActionLink("Delete", "Delete", "Address", new { addressId = item.AddressID }, null)
             </td>
         </tr>
     }
