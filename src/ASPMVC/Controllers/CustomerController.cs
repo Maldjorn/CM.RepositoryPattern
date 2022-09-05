@@ -1,4 +1,5 @@
 ﻿using CM.Customers;
+using CM.Customers.Business;
 using CM.Customers.Entities;
 using CM.Customers.Repositories;
 using PagedList;
@@ -11,6 +12,7 @@ namespace ASPMVC.Controllers
     {
         #region Fields
         List<Customer> customers = new List<Customer>();
+        private readonly ICustomerService _customerService;
         readonly IRepository<Customer> _customerRepository;
         readonly IRepository<Address> _addressRepository;
         readonly string connectionString = @"Data Source=DESKTOP-JDONGM6\SQLEXPRESS;Database=CustomerLib_Timoschenko_Web;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
@@ -20,12 +22,13 @@ namespace ASPMVC.Controllers
         public CustomerController()
         {
             _customerRepository = new CustomerRepository(connectionString);
+            _customerService = new CustomerService();
             _addressRepository = new AddressRepository(connectionString);
         }
 
-        public CustomerController(IRepository<Customer> repository)
+        public CustomerController(ICustomerService repository)
         {
-            _customerRepository = repository;
+            _customerService = repository;
         }
         #endregion
 
@@ -48,7 +51,7 @@ namespace ASPMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Customer customer)
         {
-            _customerRepository.Create(customer);
+            _customerService.Create(customer);
             return RedirectToAction("Index");
         }
 
