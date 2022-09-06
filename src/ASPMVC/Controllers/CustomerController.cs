@@ -1,5 +1,7 @@
-﻿using CM.Customers;
+﻿using CM.Addresss.Business;
+using CM.Customers;
 using CM.Customers.Business;
+using CM.Customers.Business.CustomersService;
 using CM.Customers.Entities;
 using CM.Customers.Repositories;
 using PagedList;
@@ -13,17 +15,14 @@ namespace ASPMVC.Controllers
         #region Fields
         List<Customer> customers = new List<Customer>();
         private readonly ICustomerService _customerService;
-        readonly IRepository<Customer> _customerRepository;
-        readonly IRepository<Address> _addressRepository;
-        readonly string connectionString = @"Data Source=DESKTOP-JDONGM6\SQLEXPRESS;Database=CustomerLib_Timoschenko_Web;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private readonly IAddressService _addresssService;
         #endregion
 
         #region Constructors
         public CustomerController()
         {
-            _customerRepository = new CustomerRepository(connectionString);
             _customerService = new CustomerService();
-            _addressRepository = new AddressRepository(connectionString);
+            _addresssService = new AddressService();
         }
 
         public CustomerController(ICustomerService repository)
@@ -38,7 +37,7 @@ namespace ASPMVC.Controllers
         {
             int pageNumber = page ?? 1;
             int pageSize = 5;
-            customers = _customerRepository.GetAll();
+            customers = _customerService.GetAll();
             return View(customers.ToPagedList(pageNumber, pageSize));
         }
 
@@ -61,14 +60,14 @@ namespace ASPMVC.Controllers
             {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
-            var customer = _customerRepository.Read(customerId);
+            var customer = _customerService.Read(customerId);
 
             if (customer == null)
             {
                 return HttpNotFound();
             }
 
-            var addresses = _addressRepository.GetAll(customerId);
+            var addresses = _addresssService.GetAll(customerId);
             ViewBag.CustomerAddresses = addresses;
 
             return View(customer);
@@ -80,7 +79,7 @@ namespace ASPMVC.Controllers
             {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
-            var customer = _customerRepository.Read(customerId);
+            var customer = _customerService.Read(customerId);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -92,7 +91,7 @@ namespace ASPMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int customerId)
         {
-            _customerRepository.Delete(customerId);
+            _customerService.Delete(customerId);
             return RedirectToAction("Index");
 
         }
@@ -103,7 +102,7 @@ namespace ASPMVC.Controllers
             {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
-            var customer = _customerRepository.Read(customerId);
+            var customer = _customerService.Read(customerId);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -116,7 +115,7 @@ namespace ASPMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Customer customer)
         {
-            _customerRepository.Update(customer);
+            _customerService.Update(customer);
             return RedirectToAction("index");
         }
         #endregion

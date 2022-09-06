@@ -1,4 +1,5 @@
-﻿using CM.Customers;
+﻿using CM.Addresss.Business;
+using CM.Customers;
 using CM.Customers.Entities;
 using CM.Customers.Repositories;
 using System.Web.Mvc;
@@ -9,26 +10,26 @@ namespace ASPMVC.Controllers
     public class AddressController : Controller
     {
         #region Fields
-        private readonly IRepository<Address> _addressRepository;
+        private readonly IAddressService _addressService;
         readonly string connectionString = @"Data Source=DESKTOP-JDONGM6\SQLEXPRESS;Database=CustomerLib_Timoschenko_Web;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         #endregion
 
         #region Constructors
         public AddressController()
         {
-            _addressRepository = new AddressRepository(connectionString);
+            _addressService = new AddressService();
         }
 
-        public AddressController(IRepository<Address> repository)
+        public AddressController(IAddressService service)
         {
-            _addressRepository = repository;
+            _addressService = service;
         }
         #endregion
 
         #region Methods
         public ActionResult Index()
         {
-            var addresses = _addressRepository.GetAll();
+            var addresses = _addressService.GetAll();
             return View(addresses);
         }
 
@@ -57,7 +58,7 @@ namespace ASPMVC.Controllers
             {
                 return HttpNotFound();
             }
-            _addressRepository.Create(address);
+            _addressService.Create(address);
             return RedirectToAction("Details", "Customer", new { customerId = address.CustomerID });
         }
 
@@ -67,7 +68,7 @@ namespace ASPMVC.Controllers
             {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
-            var address = _addressRepository.Read(addressId);
+            var address = _addressService.Read(addressId);
             if (address == null)
             {
                 return HttpNotFound();
@@ -81,7 +82,7 @@ namespace ASPMVC.Controllers
             {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
-            var address = _addressRepository.Read(addressId);
+            var address = _addressService.Read(addressId);
             if (address == null)
             {
                 return HttpNotFound();
@@ -96,7 +97,7 @@ namespace ASPMVC.Controllers
             {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
-            var address = _addressRepository.Read(addressId);
+            var address = _addressService.Read(addressId);
             if (address == null)
             {
                 return HttpNotFound();
@@ -108,8 +109,8 @@ namespace ASPMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(Address address)
         {
-            var addressObject = _addressRepository.Read(address.AddressID);
-            _addressRepository.Delete(address.AddressID);
+            var addressObject = _addressService.Read(address.AddressID);
+            _addressService.Delete(address.AddressID);
             return RedirectToAction("Details", "Customer", new { customerId = addressObject.CustomerID });
 
         }
