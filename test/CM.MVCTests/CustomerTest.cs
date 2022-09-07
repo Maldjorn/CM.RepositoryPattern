@@ -12,7 +12,7 @@ namespace CM.MVCTests
     public class CustomerTest
     {
         [Fact]
-        public void Should()
+        public void ShouldDoIndex()
         {
             var controller = new CustomerController();
             var countries = (controller.Index(1) as ViewResult).Model as PagedList<Customer>;
@@ -49,9 +49,19 @@ namespace CM.MVCTests
 
             Assert.Equal("Alex", customers.firstName);
         }
-
         [Fact]
         public void ShouldDoEdit()
+        {
+            var customerRepositoryMock = new Mock<IRepository<Customer>>();
+            customerRepositoryMock.Setup(x => x.Read(1)).Returns(new Customer { customerID = 1 });
+            var controller = new CustomerController(customerRepositoryMock.Object);
+            int? input = 1;
+            var result = (controller.Edit(input) as ViewResult).Model as Customer;
+            Assert.Equal(1,result.customerID);
+        }
+
+        [Fact]
+        public void ShouldDoEditPost()
         {
             var customerRepositoryMock = new Mock<IRepository<Customer>>();
             var controller = new CustomerController(customerRepositoryMock.Object);
@@ -67,11 +77,32 @@ namespace CM.MVCTests
             }) as RedirectToRouteResult;
 
             customerRepositoryMock.Verify(x => x.Update(It.IsAny<Customer>()));
-            Assert.NotNull(customers);
-            
+            Assert.NotNull(customers);  
+        }
+        [Fact]
+        
+        public void ShouldDoEditHttpNotFound()
+        {
+            var customerRepositoryMock = new Mock<IRepository<Customer>>();
+            var controller = new CustomerController(customerRepositoryMock.Object);
+            int? input = 1000;
+            var result = controller.Edit(input) as HttpNotFoundResult;
+            Assert.Equal(new HttpNotFoundResult().StatusCode, result.StatusCode);
         }
         [Fact]
         public void ShouldDoDelete()
+        {
+            var customerRepositoryMock = new Mock<IRepository<Customer>>();
+            customerRepositoryMock.Setup(x => x.Delete(1));
+            customerRepositoryMock.Setup(x => x.Read(1)).Returns(new Customer { customerID = 1 });
+            var controller = new CustomerController(customerRepositoryMock.Object);
+
+            int? input = 1;
+            var result = (controller.Delete(input) as ViewResult).Model as Customer;
+            Assert.Equal(1, result.customerID);
+        }
+        [Fact]
+        public void ShouldDoDeletePost()
         {
             var customerRepositoryMock = new Mock<IRepository<Customer>>();
             var controller = new CustomerController(customerRepositoryMock.Object);
@@ -86,6 +117,15 @@ namespace CM.MVCTests
             var controller = new CustomerController(customerRepositoryMock.Object);
             var result = controller.Delete(null) as HttpStatusCodeResult;
             Assert.Equal(new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest).StatusCode, result.StatusCode);
+        }
+        [Fact]
+        public void ShouldDoDeleteHttpNotfound()
+        {
+            var customerRepositoryMock = new Mock<IRepository<Customer>>();
+            var controller = new CustomerController(customerRepositoryMock.Object);
+            int? input = 1000;
+            var result = controller.Delete(input) as HttpNotFoundResult;
+            Assert.Equal(new HttpNotFoundResult().StatusCode, result.StatusCode);
         }
 
         [Fact]
@@ -109,7 +149,9 @@ namespace CM.MVCTests
         {
             var customerRepositoryMock = new Mock<IRepository<Customer>>();
             var controller = new CustomerController(customerRepositoryMock.Object);
-            //var result = controller.Edit(null) as HttpNotFoundResult;
+            int? nullInt = null;
+            var result = controller.Edit(nullInt) as HttpStatusCodeResult;
+            Assert.Equal(new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest).StatusCode, result.StatusCode);
         }
     }
 }

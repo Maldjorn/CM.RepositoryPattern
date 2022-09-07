@@ -5,6 +5,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Xunit;
 
 namespace CM.MVCTests
@@ -145,6 +146,32 @@ namespace CM.MVCTests
             var addressController = new AddressController(addressRepositoryMock.Object);
             var result = addressController.Delete(1) as HttpNotFoundResult;
             Assert.NotNull(result);
+        }
+        [Fact]
+        public void ShouldDoDeleteFill()
+        {
+            var addressRepositoryMock = new Mock<IRepository<Address>>();
+            addressRepositoryMock.Setup(x => x.Delete(1));
+            addressRepositoryMock.Setup(x => x.Read(1)).Returns(new Address { AddressID = 1});
+            var addressController = new AddressController(addressRepositoryMock.Object);
+            var result = (addressController.Delete(1) as ViewResult).Model as Address;
+            Assert.Equal(1, result.AddressID);
+
+        }
+        [Fact]
+        public void ShouldDoDelete()
+        {
+            var addressRepositoryMock = new Mock<IRepository<Address>>();
+            addressRepositoryMock.Setup(x => x.Delete(1));
+            addressRepositoryMock.Setup(x => x.Read(1)).Returns(new Address { AddressID = 1 });
+            Address address = new Address()
+            {
+                AddressID = 1
+            };
+            var addressController = new AddressController(addressRepositoryMock.Object);
+            var result = addressController.Delete(address) as RedirectToRouteResult;
+            Assert.NotNull(result);
+
         }
 
     }
